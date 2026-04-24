@@ -1,8 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-// Reusing Bogie class from UC7
+// Reusing Bogie class
 class Bogie {
     String name;
     int capacity;
@@ -14,7 +15,7 @@ class Bogie {
 
     @Override
     public String toString() {
-        return "Bogie: " + name + " | Capacity: " + capacity;
+        return "Bogie{name='" + name + "', capacity=" + capacity + "}";
     }
 }
 
@@ -24,24 +25,26 @@ public class Train_App_Procedure {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Original bogie list
+        // Create bogie list
         List<Bogie> bogies = new ArrayList<>();
+
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 56));
         bogies.add(new Bogie("First Class", 40));
-        bogies.add(new Bogie("Luxury AC", 80));
+        bogies.add(new Bogie("Sleeper", 80)); // duplicate type (for grouping demo)
+        bogies.add(new Bogie("AC Chair", 60));
 
-        // Filter bogies with capacity > 60
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // Group bogies by name
+        Map<String, List<Bogie>> groupedBogies =
+                bogies.stream()
+                        .collect(Collectors.groupingBy(b -> b.name));
 
-        // Display original list
-        System.out.println("\nOriginal Bogie List:");
-        bogies.forEach(System.out::println);
+        // Display grouped structure
+        System.out.println("\nGrouped Bogies:");
 
-        // Display filtered list
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
-        filteredBogies.forEach(System.out::println);
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println("\nType: " + entry.getKey());
+            entry.getValue().forEach(System.out::println);
+        }
     }
 }
