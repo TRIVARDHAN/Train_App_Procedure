@@ -1,54 +1,42 @@
-import java.util.Arrays;
-
 public class Train_App_Procedure {
 
     public static void main(String[] args) {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Bogie IDs (unsorted input)
-        String[] bogieIDs = {
-                "BG309",
-                "BG101",
-                "BG550",
-                "BG205",
-                "BG412"
-        };
+        String[] bogieIDs = {}; // Empty dataset (test case scenario)
 
-        String searchKey = "BG205";
+        String searchKey = "BG101";
 
-        // Step 1: Sort array (mandatory for binary search)
-        Arrays.sort(bogieIDs);
+        try {
+            searchBogie(bogieIDs, searchKey);
+        } catch (IllegalStateException e) {
+            System.out.println("ERROR: " + e.getMessage());
+        }
 
-        System.out.println("\nSorted Bogie IDs:");
-        System.out.println(Arrays.toString(bogieIDs));
+        System.out.println("\nProgram continues safely...");
+    }
 
-        // Step 2: Binary Search
-        int low = 0;
-        int high = bogieIDs.length - 1;
+    // Search method with validation
+    public static void searchBogie(String[] bogieIDs, String searchKey) {
+
+        // Defensive check
+        if (bogieIDs.length == 0) {
+            throw new IllegalStateException("Cannot perform search: No bogies available in train consist");
+        }
+
         boolean found = false;
 
-        while (low <= high) {
-
-            int mid = (low + high) / 2;
-
-            int comparison = bogieIDs[mid].compareTo(searchKey);
-
-            if (comparison == 0) {
-                System.out.println("\nBogie Found: " + searchKey + " at index " + mid);
+        for (String id : bogieIDs) {
+            if (id.equals(searchKey)) {
+                System.out.println("Bogie Found: " + searchKey);
                 found = true;
                 break;
-            }
-            else if (comparison < 0) {
-                low = mid + 1; // search right half
-            }
-            else {
-                high = mid - 1; // search left half
             }
         }
 
         if (!found) {
-            System.out.println("\nBogie Not Found: " + searchKey);
+            System.out.println("Bogie Not Found: " + searchKey);
         }
     }
 }
